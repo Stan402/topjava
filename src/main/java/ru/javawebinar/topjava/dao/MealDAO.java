@@ -11,6 +11,6 @@ public interface MealDAO {
     List<MealWithExceed> getAllWithExceed(int caloriesPerDay);
     void deleteById(int id);
     void addOrUpdate(Meal meal);
-    Meal readById(int id);
+    Meal readOrCreate(int id);
     List<Meal> getAll();
 }

@@ -24,7 +24,12 @@ public class MealServlet extends HttpServlet {
 
     private static final int CALORIES_RATION = 2000;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private final MealDAO mealDAO = new MealDAOLocal();
+    private MealDAO mealDAO;
+
+    @Override
+    public void init() throws ServletException {
+        mealDAO = new MealDAOLocal();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,35 +38,30 @@ public class MealServlet extends HttpServlet {
         if (action == null) {
             action = "list";
         }
-        String forward = "";
         int id;
         switch (action) {
             case "delete":
                 id = Integer.parseInt(req.getParameter("id"));
                 mealDAO.deleteById(id);
-                req.setAttribute("meals", mealDAO.getAllWithExceed(CALORIES_RATION));
-                forward = MEAL_LIST;
+                log.debug("redirect to meals...");
+                resp.sendRedirect("meals");
                 break;
             case "list":
+                log.debug("forward to meals...");
                 req.setAttribute("meals", mealDAO.getAllWithExceed(CALORIES_RATION));
-                forward = MEAL_LIST;
+                req.setAttribute("formatter", formatter);
+                req.getRequestDispatcher(MEAL_LIST).forward(req, resp);
                 break;
             case "update":
-                id = Integer.parseInt(req.getParameter("id"));
-                req.setAttribute("meal", mealDAO.readById(id));
-                forward = ADD_OR_UPDATE_MEAL;
-                break;
-            case "add":
-                req.setAttribute("meal", new Meal());
-                forward = ADD_OR_UPDATE_MEAL;
+                String param = req.getParameter("id");
+                id = param != null ? Integer.parseInt(param) : 0;
+                req.setAttribute("meal", mealDAO.readOrCreate(id));
+                log.debug("forward to update...");
+                req.getRequestDispatcher(ADD_OR_UPDATE_MEAL).forward(req, resp);
                 break;
             default:
                 log.warn("unknown parametr: action - %s", action);
         }
-
-        log.debug("forward to meals...");
-        req.setAttribute("formatter", formatter);
-        req.getRequestDispatcher(forward).forward(req, resp);
     }
 
     @Override

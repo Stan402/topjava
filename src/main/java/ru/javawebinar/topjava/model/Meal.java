@@ -11,10 +11,7 @@ public class Meal {
     private int calories;
 
     public Meal(){
-        id = 0;
-        dateTime = LocalDateTime.now();
-        description = "";
-        calories = 0;
+        this(LocalDateTime.now(), "", 0);
     }
 
     public Meal(LocalDateTime dateTime, String description, int calories) {

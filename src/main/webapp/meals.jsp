@@ -11,7 +11,6 @@
 <table border="1">
     <thead>
     <tr>
-        <td>ID</td>
         <td>Date & Time</td>
         <td>Description</td>
         <td>Calories</td>
@@ -23,7 +22,6 @@
     <%--@elvariable id="formatter" type="java.time.format.DateTimeFormatter"--%>
     <c:forEach items="${meals}" var="meal">
         <tr style="color: ${meal.exceed ? 'red':'green'}">
-            <td><c:out value="${meal.id}"/></td>
             <td><c:out value="${meal.dateTime.format(formatter)}"/></td>
             <td><c:out value="${meal.description}"/></td>
             <td><c:out value="${meal.calories}"/></td>
@@ -38,6 +36,6 @@
 </table>
 
 <br><br>
-<h3><a href="meals?action=add">Add meal</a></h3>
+<h3><a href="meals?action=update">Add meal</a></h3>
 </body>
 </html>
