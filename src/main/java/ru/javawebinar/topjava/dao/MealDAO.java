@@ -8,9 +8,8 @@ import java.util.List;
 
 public interface MealDAO {
 
-    List<MealWithExceed> getAllWithExceed(int caloriesPerDay);
     void deleteById(int id);
     void addOrUpdate(Meal meal);
-    Meal readOrCreate(int id);
+    Meal readById(int id);
     List<Meal> getAll();
 }

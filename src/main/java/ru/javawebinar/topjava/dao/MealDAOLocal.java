@@ -38,12 +38,6 @@ public class MealDAOLocal implements MealDAO {
     }
 
     @Override
-    public List<MealWithExceed> getAllWithExceed(int caloriesPerDay) {
-        return MealsUtil.getFilteredWithExceeded(new ArrayList<>(meals.values())
-                , LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
-    }
-
-    @Override
     public void deleteById(int id) {
         if (meals.containsKey(id)) {
             meals.remove(id);
@@ -64,9 +58,9 @@ public class MealDAOLocal implements MealDAO {
     }
 
     @Override
-    public Meal readOrCreate(int id) {
+    public Meal readById(int id) {
         log.debug(String.format("Reading meal #%d from localDB...", id));
-        return meals.getOrDefault(id, new Meal());
+        return meals.get(id);
     }
 
     @Override

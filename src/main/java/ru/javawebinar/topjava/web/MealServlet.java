@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import ru.javawebinar.topjava.dao.MealDAO;
 import ru.javawebinar.topjava.dao.MealDAOLocal;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -48,14 +50,15 @@ public class MealServlet extends HttpServlet {
                 break;
             case "list":
                 log.debug("forward to meals...");
-                req.setAttribute("meals", mealDAO.getAllWithExceed(CALORIES_RATION));
+                req.setAttribute("meals", MealsUtil.getFilteredWithExceeded(mealDAO.getAll()
+                        , LocalTime.MIN, LocalTime.MAX, CALORIES_RATION));
                 req.setAttribute("formatter", formatter);
                 req.getRequestDispatcher(MEAL_LIST).forward(req, resp);
                 break;
             case "update":
-                String param = req.getParameter("id");
-                id = param != null ? Integer.parseInt(param) : 0;
-                req.setAttribute("meal", mealDAO.readOrCreate(id));
+                String idString = req.getParameter("id");
+                Meal meal = (idString != null) ? mealDAO.readById(Integer.parseInt(idString)) : new Meal();
+                req.setAttribute("meal", meal);
                 log.debug("forward to update...");
                 req.getRequestDispatcher(ADD_OR_UPDATE_MEAL).forward(req, resp);
                 break;
