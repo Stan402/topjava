@@ -29,7 +29,8 @@ public class MealRestController {
 
     public List<MealWithExceed> getFiltered(LocalDate dStart, LocalDate dEnd, LocalTime tStart, LocalTime tEnd){
         log.info("getAll from {} to {} in time interval from {} to {} for user {}", dStart, dEnd, tStart, tEnd, AuthorizedUser.id());
-        return null;
+
+        return MealsUtil.getFilteredWithExceeded(service.getFiltered(AuthorizedUser.id(),dStart, dEnd), tStart, tEnd, AuthorizedUser.getCaloriesPerDay());
     }
 
     public Meal get(int id){
@@ -47,8 +48,8 @@ public class MealRestController {
         return service.create(meal, AuthorizedUser.id());
     }
 
-    public void update(Meal meal){
+    public void update(Meal meal, int id){
         log.info("update {} meal for user {]", meal, AuthorizedUser.id());
-        service.update(meal, AuthorizedUser.id());
+        service.update(meal, id,  AuthorizedUser.id());
     }
 }
