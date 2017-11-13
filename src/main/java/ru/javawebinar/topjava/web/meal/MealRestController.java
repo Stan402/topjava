@@ -27,10 +27,22 @@ public class MealRestController {
         return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay());
     }
 
-    public List<MealWithExceed> getFiltered(LocalDate dStart, LocalDate dEnd, LocalTime tStart, LocalTime tEnd){
-        log.info("getAll from {} to {} in time interval from {} to {} for user {}", dStart, dEnd, tStart, tEnd, AuthorizedUser.id());
+    public List<MealWithExceed> getFiltered(String startDate, String endDate, String startTime, String endTime){
+        log.info("getAll from {} to {} in time interval from {} to {} for user {}", startDate, endDate, startTime, endTime, AuthorizedUser.id());
+        LocalDate dStart = getDate(startDate, LocalDate.MIN);
+        LocalDate dEnd = getDate(endDate, LocalDate.MAX);
+        LocalTime tStart = getTime(startTime, LocalTime.MIN);
+        LocalTime tEnd = getTime(endTime, LocalTime.MAX);
+        return MealsUtil.getFilteredWithExceeded(service.getFiltered(AuthorizedUser.id(),dStart, dEnd)
+                , tStart, tEnd, AuthorizedUser.getCaloriesPerDay());
+    }
 
-        return MealsUtil.getFilteredWithExceeded(service.getFiltered(AuthorizedUser.id(),dStart, dEnd), tStart, tEnd, AuthorizedUser.getCaloriesPerDay());
+    private LocalDate getDate(String date, LocalDate defaultDate) {
+        return date == null || date.isEmpty() ? defaultDate: LocalDate.parse(date);
+    }
+
+    private LocalTime getTime(String time, LocalTime defaultTime){
+        return time == null || time.isEmpty() ? defaultTime : LocalTime.parse(time);
     }
 
     public Meal get(int id){

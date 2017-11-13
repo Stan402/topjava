@@ -36,23 +36,25 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <h2>Meals</h2>
-
     <form method="get" action="meals">
         <input type="hidden" name="action" value="filter">
         <dl>
             <dt>From Date:</dt>
-            <dd><input type="date" name="startDate"></dd>
+            <dd><input type="date" name="startDate" value="${startDate}"></dd>
             <dt>From Time:</dt>
-            <dd><input type="time" name="startTime"></dd>
+            <dd><input type="time" name="startTime" value="${startTime}"></dd>
         </dl>
         <dl>
             <dt>To Date:</dt>
-            <dd><input type="date" name="endDate"></dd>
+            <dd><input type="date" name="endDate" value="${endDate}"></dd>
             <dt>To Time:</dt>
-            <dd><input type="time" name="endTime"></dd>
+            <dd><input type="time" name="endTime" value="${endTime}"></dd>
         </dl>
         <button type="submit">Set filter</button>
-        <a href="meals?action=all" type="button">Cancel</a>
+    </form>
+    <form method="get" action="meals">
+
+        <button type="submit">Show all</button>
     </form>
 
     <a href="meals?action=create">Add Meal</a>

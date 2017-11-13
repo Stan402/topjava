@@ -76,10 +76,14 @@ public class MealServlet extends HttpServlet {
                 break;
             case "filter":
                 log.info("filter");
-                LocalDate startDate = getDate(request, "startDate", LocalDate.MIN);
-                LocalDate endDate = getDate(request, "endDate", LocalDate.MAX);
-                LocalTime startTime = getTime(request, "startTime", LocalTime.MIN);
-                LocalTime endTime = getTime(request, "endTime", LocalTime.MAX);
+                String startDate = request.getParameter("startDate");
+                String endDate = request.getParameter("endDate");
+                String startTime = request.getParameter("startTime");
+                String endTime = request.getParameter("endTime");
+                request.setAttribute("startDate", startDate);
+                request.setAttribute("endDate", endDate);
+                request.setAttribute("startTime", startTime);
+                request.setAttribute("endTime", endTime);
                 request.setAttribute("meals",
                         controller.getFiltered(startDate, endDate, startTime, endTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
@@ -97,17 +101,6 @@ public class MealServlet extends HttpServlet {
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.valueOf(paramId);
-    }
-
-    private LocalDate getDate(HttpServletRequest request, String paramName, LocalDate defValue){
-        String param = request.getParameter(paramName);
-        if (param == null || param.isEmpty()) return defValue;
-        return LocalDate.parse(param);
-    }
-    private LocalTime getTime(HttpServletRequest request, String paramName, LocalTime defValue){
-        String param = request.getParameter(paramName);
-        if (param == null || param.isEmpty()) return defValue;
-        return LocalTime.parse(param);
     }
 
     @Override
