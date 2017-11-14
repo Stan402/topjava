@@ -28,23 +28,25 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     {
         log.info("init repository");
         new InMemoryUserRepositoryImpl(); //For testing purpose only!!!!! Need to refactor soon!
-        MealsUtil.MEALS.forEach(this::save);
+        MealsUtil.MEALS.forEach(meal -> save(meal, meal.getUserId()));
     }
 
     @Override
-    public Meal save(Meal meal) {
+    public Meal save(Meal meal, int userId) {
         log.info("saving {}", meal);
+        if (meal.getUserId() != userId) return null;
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
         }
-        return repository.put(meal.getId(), meal);
+        Meal oldMeal = repository.put(meal.getId(), meal);
+        return oldMeal == null ? meal : oldMeal;
     }
 
     @Override
     public boolean delete(int id, int userId) {
         log.info("deleting {} for user {}", id, userId);
         Meal meal = repository.get(id);
-        return meal != null && meal.getUserId() == userId && repository.remove(id) != null;
+        return meal != null && repository.remove(id) != null;
     }
 
     @Override

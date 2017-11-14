@@ -11,7 +11,7 @@ public class DateTimeUtil {
 //        return lt.compareTo(startTime) >= 0 && lt.compareTo(endTime) <= 0;
 //    }
 
-    public static <T extends Comparable<T>> boolean isBetween(T var, T start, T end){
+    public static <T extends Comparable<? super T>> boolean isBetween(T var, T start, T end){
         return var.compareTo(start) >= 0 && var.compareTo(end) <= 0;
     }
 

@@ -1,6 +1,8 @@
 package ru.javawebinar.topjava.model;
 
-public abstract class AbstractNamedEntity extends AbstractBaseEntity {
+import java.util.Comparator;
+
+public abstract class AbstractNamedEntity extends AbstractBaseEntity implements Comparable<AbstractNamedEntity> {
 
     protected String name;
 
@@ -15,6 +17,14 @@ public abstract class AbstractNamedEntity extends AbstractBaseEntity {
 
     public String getName() {
         return this.name;
+    }
+
+
+
+    @Override
+    public int compareTo(AbstractNamedEntity o) {
+        return this.getName().equalsIgnoreCase(o.getName()) ? o.getId() - this.getId()
+                : this.getName().compareToIgnoreCase(o.getName());
     }
 
     @Override

@@ -51,8 +51,7 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     public List<User> getAll() {
         log.info("getAll");
         return repository.values().stream()
-                .sorted((o1, o2) -> o1.getName().equalsIgnoreCase(o2.getName()) ? o2.getId() - o1.getId() :
-                        o1.getName().compareToIgnoreCase(o2.getName()))
+                .sorted()
                 .collect(Collectors.toList());
     }
 

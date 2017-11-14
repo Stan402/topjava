@@ -24,8 +24,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal create(Meal meal, int userId) throws NotFoundException{
-        if (userId != meal.getUserId()) throw new NotFoundException("Trying to create meal for another user!");
-        return repository.save(meal);
+        return checkNotFound(repository.save(meal, userId), "Trying to create meal for another user!");
     }
 
     @Override
@@ -39,10 +38,8 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
-    public void update(Meal meal, int id, int userId) throws NotFoundException{
-        if (userId != meal.getUserId()) throw new NotFoundException("Trying to update meal of another user!");
-        assureIdConsistent(meal, id);
-        repository.save(meal);
+    public void update(Meal meal, int userId) throws NotFoundException{
+        checkNotFound(repository.save(meal, userId), "Trying to update meal of another user!");
     }
 
     @Override
