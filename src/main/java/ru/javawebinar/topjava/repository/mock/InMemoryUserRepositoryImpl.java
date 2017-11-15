@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.UserComparator;
 import ru.javawebinar.topjava.util.UsersUtil;
 
 import java.util.*;
@@ -51,7 +52,7 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     public List<User> getAll() {
         log.info("getAll");
         return repository.values().stream()
-                .sorted()
+                .sorted(new UserComparator())
                 .collect(Collectors.toList());
     }
 

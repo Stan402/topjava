@@ -10,11 +10,15 @@ import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.service.MealServiceImpl;
 import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.ValidationUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+
+import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
+import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @Controller
 public class MealRestController {
@@ -56,14 +60,15 @@ public class MealRestController {
         service.delete(id, AuthorizedUser.id());
     }
 
-    public Meal create(LocalDateTime localDateTime, String description, int calories){
-        Meal meal = new Meal(AuthorizedUser.id(), localDateTime, description, calories);
+    public Meal create(Meal meal){
+        checkNew(meal);
         log.info("create {} for user {}", meal, AuthorizedUser.id());
+        meal.setUserId(AuthorizedUser.id());
         return service.create(meal, AuthorizedUser.id());
     }
 
-    public void update(LocalDateTime localDateTime, String description, int calories, int userId, int id){
-        Meal meal = new Meal(id, userId, localDateTime, description, calories);
+    public void update(Meal meal, int id){
+        assureIdConsistent(meal, id);
         log.info("update {} meal for user {]", meal, AuthorizedUser.id());
         service.update(meal, AuthorizedUser.id());
     }

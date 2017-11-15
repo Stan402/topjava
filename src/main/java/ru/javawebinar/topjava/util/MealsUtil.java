@@ -24,14 +24,16 @@ public class MealsUtil {
     }
 
     private static List<Meal> generateListForUser(User user){
-        return Arrays.asList(
-                new Meal(user.getId(), LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
-                new Meal(user.getId(), LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
-                new Meal(user.getId(), LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500),
-                new Meal(user.getId(), LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000),
-                new Meal(user.getId(), LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500),
-                new Meal(user.getId(), LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
+        List<Meal> meals = Arrays.asList(
+                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак" + user.getName(), 500),
+                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед"+ user.getName(), 1000),
+                new Meal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин"+ user.getName(), 500),
+                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак"+ user.getName(), 1000),
+                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед"+ user.getName(), 500),
+                new Meal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин"+ user.getName(), 510)
         );
+        meals.forEach(meal -> meal.setUserId(user.getId()));
+        return meals;
     }
 
     public static final int DEFAULT_CALORIES_PER_DAY = 2000;
