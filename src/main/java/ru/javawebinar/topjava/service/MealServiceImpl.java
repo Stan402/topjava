@@ -24,7 +24,7 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public Meal create(Meal meal, int userId) throws NotFoundException{
-        return checkNotFound(repository.save(meal, userId), "Trying to create meal for another user!");
+        return repository.save(meal, userId);
     }
 
     @Override

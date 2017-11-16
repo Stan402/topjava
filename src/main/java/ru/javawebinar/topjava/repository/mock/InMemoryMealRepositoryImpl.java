@@ -42,8 +42,7 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
             else
                 meal.setUserId(userId);
         }
-        Meal oldMeal = repository.put(meal.getId(), meal);
-        return oldMeal == null ? meal : oldMeal;
+        return repository.put(meal.getId(), meal);
     }
 
     @Override

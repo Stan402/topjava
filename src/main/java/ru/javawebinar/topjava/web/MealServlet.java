@@ -41,7 +41,6 @@ public class MealServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         String id = request.getParameter("id");
-        String userId = request.getParameter("userId");
         LocalDateTime dateTime = LocalDateTime.parse(request.getParameter("dateTime"));
         String description = request.getParameter("description");
         int calories = Integer.valueOf(request.getParameter("calories"));
