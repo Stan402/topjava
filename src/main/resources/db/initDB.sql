@@ -31,5 +31,7 @@ CREATE TABLE meals
   date_time  TIMESTAMP DEFAULT now() NOT NULL,
   description VARCHAR NOT NULL,
   calories INTEGER DEFAULT 1000 NOT NULL ,
-  user_id INTEGER REFERENCES users (id) ON DELETE CASCADE
+  user_id INTEGER REFERENCES users (id) ON DELETE CASCADE,
+  CONSTRAINT user_date_time_idx UNIQUE (date_time, user_id)
 );
+CREATE INDEX meals_date_time_idx ON meals (date_trunc('day',date_time));
