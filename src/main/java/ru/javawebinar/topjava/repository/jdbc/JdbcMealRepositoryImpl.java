@@ -69,20 +69,15 @@ public class JdbcMealRepositoryImpl implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE user_id=?", ROW_MAPPER, userId);
-        return getSorted(meals);
+        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE user_id=? ORDER BY date_time DESC", ROW_MAPPER, userId);
+        return meals;
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        List<Meal> meals = jdbcTemplate.query("SELECT * FROM meals WHERE user_id=? AND  date_time BETWEEN ? AND  ?"
+        List<Meal> meals = jdbcTemplate.query(
+                "SELECT * FROM meals WHERE user_id=? AND  date_time BETWEEN ? AND  ? ORDER BY date_time DESC"
                 , ROW_MAPPER, userId, startDate, endDate);
-        return getSorted(meals);
-    }
-
-    private List<Meal> getSorted(List<Meal> meals) {
-        return meals == null
-                ? new ArrayList<>()
-                : meals.stream().sorted(Comparator.comparing(Meal::getDateTime).reversed()).collect(Collectors.toList());
+        return meals;
     }
 }
