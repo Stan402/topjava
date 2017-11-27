@@ -1,9 +1,6 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.AfterClass;
-import org.junit.AssumptionViolatedException;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
@@ -43,29 +40,20 @@ public class MealServiceTest {
 
     private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
 
-    private static String watchedLog = "\n";
+    private static String watchedLog = "\n\n";
 
-    private static void testInfo(Description description, String status, long nanos) {
+    private static void testInfo(Description description, long nanos) {
         String testName = description.getMethodName();
-        watchedLog += String.format("Test %s %s, spent %d microseconds",
-                testName, status, TimeUnit.NANOSECONDS.toMicros(nanos)) + "\n";
+        watchedLog += String.format("| %-25.25s| %4d milliseconds |\n",
+                testName, TimeUnit.NANOSECONDS.toMillis(nanos));
     }
 
     @Rule
     public Stopwatch stopwatch = new Stopwatch() {
-        @Override
-        protected void succeeded(long nanos, Description description) {
-            testInfo(description, "succeeded", nanos);
-        }
 
         @Override
-        protected void failed(long nanos, Throwable e, Description description) {
-            testInfo(description, "failed", nanos);
-        }
-
-        @Override
-        protected void skipped(long nanos, AssumptionViolatedException e, Description description) {
-            testInfo(description, "skipped", nanos);
+        protected void finished(long nanos, Description description) {
+            testInfo(description, nanos);
         }
     };
 
@@ -134,8 +122,21 @@ public class MealServiceTest {
                 LocalDate.of(2015, Month.MAY, 30), USER_ID), MEAL3, MEAL2, MEAL1);
     }
 
+    @BeforeClass
+    public static void initResultTable() {
+        watchedLog += "Test results for MealService: \n";
+        addLine();
+        watchedLog += String.format("| %-25.25s|    Time spent     |\n", "Test");
+        addLine();
+    }
+
     @AfterClass
     public static void afterTests() {
+        addLine();
         log.info(watchedLog);
+    }
+
+    private static void addLine() {
+        watchedLog += "------------------------------------------------\n";
     }
 }
