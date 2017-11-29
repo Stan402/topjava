@@ -13,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -31,7 +30,6 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@Transactional
 public class MealServiceTest {
 
     static {
@@ -40,12 +38,14 @@ public class MealServiceTest {
 
     private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
 
-    private static String watchedLog = "\n\n";
+    private static StringBuilder watchedLog = new StringBuilder();
 
     private static void testInfo(Description description, long nanos) {
         String testName = description.getMethodName();
-        watchedLog += String.format("| %-25.25s| %4d milliseconds |\n",
-                testName, TimeUnit.NANOSECONDS.toMillis(nanos));
+        long testTime = TimeUnit.NANOSECONDS.toMillis(nanos);
+        watchedLog.append(String.format("| %-25.25s| %4d milliseconds |\n",
+                testName, testTime));
+        log.info(String.format("\nTest %s done, spent %d milliseconds", testName, testTime));
     }
 
     @Rule
@@ -122,21 +122,13 @@ public class MealServiceTest {
                 LocalDate.of(2015, Month.MAY, 30), USER_ID), MEAL3, MEAL2, MEAL1);
     }
 
-    @BeforeClass
-    public static void initResultTable() {
-        watchedLog += "Test results for MealService: \n";
-        addLine();
-        watchedLog += String.format("| %-25.25s|    Time spent     |\n", "Test");
-        addLine();
-    }
-
     @AfterClass
     public static void afterTests() {
-        addLine();
-        log.info(watchedLog);
-    }
-
-    private static void addLine() {
-        watchedLog += "------------------------------------------------\n";
+        watchedLog.insert(0, "\n\nTest results for MealService: \n"
+                + "------------------------------------------------\n"
+                + String.format("| %-25.25s|    Time spent     |\n", "Test")
+                + "------------------------------------------------\n");
+        watchedLog.append("------------------------------------------------\n");
+        log.info(watchedLog.toString());
     }
 }
