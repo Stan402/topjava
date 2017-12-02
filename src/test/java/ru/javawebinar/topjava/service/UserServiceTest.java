@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.ActiveDbProfileResolver;
+import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -26,7 +27,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
 public abstract class UserServiceTest extends BaseServiceTest {
 
     @Autowired
-    private UserService service;
+    UserService service;
 
     @Autowired
     private CacheManager cacheManager;
@@ -90,5 +91,17 @@ public abstract class UserServiceTest extends BaseServiceTest {
     public void getAll() throws Exception {
         List<User> all = service.getAll();
         assertMatch(all, ADMIN, USER);
+    }
+
+    @Test
+    public void getWithMeals() {
+        thrown.expect(UnsupportedOperationException.class);
+        service.getWithMeals(USER_ID);
+    }
+
+    @Test
+    public void getWithMealsNotFound() {
+        thrown.expect(UnsupportedOperationException.class);
+        service.getWithMeals(1);
     }
 }

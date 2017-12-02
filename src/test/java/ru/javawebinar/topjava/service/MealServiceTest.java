@@ -33,7 +33,7 @@ public abstract class MealServiceTest extends BaseServiceTest {
 
 
     @Autowired
-    private MealService service;
+    MealService service;
 
     @Test
     public void testDelete() throws Exception {
@@ -90,5 +90,17 @@ public abstract class MealServiceTest extends BaseServiceTest {
         assertMatch(service.getBetweenDates(
                 LocalDate.of(2015, Month.MAY, 30),
                 LocalDate.of(2015, Month.MAY, 30), USER_ID), MEAL3, MEAL2, MEAL1);
+    }
+
+    @Test
+    public void testGetWithUser() throws Exception {
+        thrown.expect(UnsupportedOperationException.class);
+        service.getWithUser(ADMIN_MEAL_ID, ADMIN_ID);
+    }
+
+    @Test
+    public void testGetWithUserNotFound() throws Exception {
+        thrown.expect(UnsupportedOperationException.class);
+        service.getWithUser(MEAL1_ID, ADMIN_ID);
     }
 }
