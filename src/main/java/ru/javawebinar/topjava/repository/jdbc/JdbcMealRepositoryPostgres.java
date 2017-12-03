@@ -22,12 +22,7 @@ public class JdbcMealRepositoryPostgres extends JdbcMealRepositoryImpl implement
     }
 
     @Override
-    public Meal save(Meal meal, int userId) {
-        return super.save(meal, userId, meal.getDateTime());
-    }
-
-    @Override
-    public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return super.getBetween(startDate, endDate, userId);
+    LocalDateTime convertDateTime(LocalDateTime dateTime) {
+        return dateTime;
     }
 }

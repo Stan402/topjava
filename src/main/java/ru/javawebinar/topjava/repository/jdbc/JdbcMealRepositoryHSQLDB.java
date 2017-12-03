@@ -23,12 +23,8 @@ public class JdbcMealRepositoryHSQLDB extends JdbcMealRepositoryImpl implements 
     }
 
     @Override
-    public Meal save(Meal meal, int userId) {
-        return super.save(meal, userId, Timestamp.valueOf(meal.getDateTime()));
+    Timestamp convertDateTime(LocalDateTime dateTime) {
+        return Timestamp.valueOf(dateTime);
     }
 
-    @Override
-    public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return super.getBetween(Timestamp.valueOf(startDate), Timestamp.valueOf(endDate), userId);
-    }
 }

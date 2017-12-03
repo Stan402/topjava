@@ -37,13 +37,13 @@ public abstract class JdbcMealRepositoryImpl {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public <T extends Comparable<T>> Meal save(Meal meal, int userId, T mealDateTime) {
+    public Meal save(Meal meal, int userId) {
 
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("date_time", mealDateTime)
+                .addValue("date_time", convertDateTime(meal.getDateTime()))
                 .addValue("user_id", userId);
 
         if (meal.isNew()) {
@@ -76,9 +76,11 @@ public abstract class JdbcMealRepositoryImpl {
                 "SELECT * FROM meals WHERE user_id=? ORDER BY date_time DESC", ROW_MAPPER, userId);
     }
 
-    public <T extends Comparable<T>> List<Meal> getBetween(T startDate, T endDate, int userId) {
+    public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, startDate, endDate);
+                ROW_MAPPER, userId, convertDateTime(startDate), convertDateTime(endDate));
     }
+
+    abstract <T> T convertDateTime(LocalDateTime dateTime);
 }
