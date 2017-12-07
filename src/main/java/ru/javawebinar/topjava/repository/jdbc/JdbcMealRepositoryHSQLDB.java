@@ -17,11 +17,6 @@ import java.util.List;
 @Repository
 public class JdbcMealRepositoryHSQLDB extends JdbcMealRepositoryImpl implements MealRepository {
 
-    public JdbcMealRepositoryHSQLDB(DataSource dataSource, JdbcTemplate jdbcTemplate
-            , NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(dataSource, jdbcTemplate, namedParameterJdbcTemplate);
-    }
-
     @Override
     Timestamp convertDateTime(LocalDateTime dateTime) {
         return Timestamp.valueOf(dateTime);

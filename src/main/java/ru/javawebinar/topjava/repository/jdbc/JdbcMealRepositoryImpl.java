@@ -21,21 +21,14 @@ public abstract class JdbcMealRepositoryImpl {
 
     private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
-    private final JdbcTemplate jdbcTemplate;
-
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    private final SimpleJdbcInsert insertMeal;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcMealRepositoryImpl(DataSource dataSource, JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.insertMeal = new SimpleJdbcInsert(dataSource)
-                .withTableName("meals")
-                .usingGeneratedKeyColumns("id");
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-        this.jdbcTemplate = jdbcTemplate;
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-    }
+    @Autowired
+    private DataSource dataSource;
 
     public Meal save(Meal meal, int userId) {
 
@@ -47,6 +40,9 @@ public abstract class JdbcMealRepositoryImpl {
                 .addValue("user_id", userId);
 
         if (meal.isNew()) {
+            SimpleJdbcInsert insertMeal = new SimpleJdbcInsert(dataSource)
+                .withTableName("meals")
+                .usingGeneratedKeyColumns("id");
             Number newId = insertMeal.executeAndReturnKey(map);
             meal.setId(newId.intValue());
         } else {

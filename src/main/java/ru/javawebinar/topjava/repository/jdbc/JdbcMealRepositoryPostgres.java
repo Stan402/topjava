@@ -16,11 +16,6 @@ import java.util.List;
 @Repository
 public class JdbcMealRepositoryPostgres extends JdbcMealRepositoryImpl implements MealRepository {
 
-    public JdbcMealRepositoryPostgres(DataSource dataSource, JdbcTemplate jdbcTemplate
-            , NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        super(dataSource, jdbcTemplate, namedParameterJdbcTemplate);
-    }
-
     @Override
     LocalDateTime convertDateTime(LocalDateTime dateTime) {
         return dateTime;
