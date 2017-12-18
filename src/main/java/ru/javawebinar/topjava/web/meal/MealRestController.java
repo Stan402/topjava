@@ -19,15 +19,8 @@ import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 @Controller
-public class MealRestController {
+public class MealRestController extends MealBaseController {
     private static final Logger log = LoggerFactory.getLogger(MealRestController.class);
-
-    private final MealService service;
-
-    @Autowired
-    public MealRestController(MealService service) {
-        this.service = service;
-    }
 
     public Meal get(int id) {
         int userId = AuthorizedUser.id();
@@ -61,24 +54,5 @@ public class MealRestController {
         service.update(meal, userId);
     }
 
-    /**
-     * <ol>Filter separately
-     * <li>by date</li>
-     * <li>by time for every date</li>
-     * </ol>
-     */
-    public List<MealWithExceed> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
-        int userId = AuthorizedUser.id();
-        log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
 
-        List<Meal> mealsDateFiltered = service.getBetweenDates(
-                startDate != null ? startDate : DateTimeUtil.MIN_DATE,
-                endDate != null ? endDate : DateTimeUtil.MAX_DATE, userId);
-
-        return MealsUtil.getFilteredWithExceeded(mealsDateFiltered,
-                startTime != null ? startTime : LocalTime.MIN,
-                endTime != null ? endTime : LocalTime.MAX,
-                AuthorizedUser.getCaloriesPerDay()
-        );
-    }
 }
