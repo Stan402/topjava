@@ -11,12 +11,9 @@
 <body>
 <jsp:include page="fragments/bodyHeaderForMeal.jsp"/>
 <section>
-    <h2>
-        <c:choose>
-            <c:when test="${meal.id == null}"><spring:message code="meal.create"/></c:when>
-            <c:otherwise><spring:message code="meal.edit"/></c:otherwise>
-        </c:choose>
-    </h2>
+    <spring:message code="meal.create" var="CreateMeal"/>
+    <spring:message code="meal.edit" var="EditMeal"/>
+    <h2><c:out value="${meal.id == null ? CreateMeal : EditMeal}"/></h2>
     <hr>
     <%--<jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>--%>
     <form:form method="post" action="save" modelAttribute="meal">

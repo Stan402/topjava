@@ -43,13 +43,8 @@
         </tr>
         </thead>
         <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>
-            <c:url var="updateLink" value="/meals/edit">
-                <c:param name="mealId" value="${meal.id}"/>
-            </c:url>
-            <c:url var="deleteLink" value="/meals/delete">
-                <c:param name="mealId" value="${meal.id}"/>
-            </c:url>
+            <%--<jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>--%>
+
             <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
@@ -59,8 +54,8 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a href="${updateLink}"><spring:message code="common.update"/></a></td>
-                <td><a href="${deleteLink}"><spring:message code="common.delete"/></a></td>
+                <td><a href="meals/edit?mealId=${meal.id}"><spring:message code="common.update"/></a></td>
+                <td><a href="meals/delete?mealId=${meal.id}"><spring:message code="common.delete"/></a></td>
             </tr>
         </c:forEach>
     </table>
