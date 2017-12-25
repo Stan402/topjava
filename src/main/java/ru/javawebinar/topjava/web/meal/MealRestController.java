@@ -8,12 +8,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.util.format.CustomDateTimeFormat;
+import ru.javawebinar.topjava.util.format.MyDateFormatter;
+import ru.javawebinar.topjava.util.format.MyTimeFormatter;
 
 import java.net.URI;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping(MealRestController.REST_URL)
@@ -56,12 +61,44 @@ public class MealRestController extends AbstractMealController {
         super.update(meal, id);
     }
 
+    // using @DateTimeFormat
+//    @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public List<MealWithExceed> getBetween(
+//            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate
+//            , @RequestParam(value = "startTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime startTime
+//            , @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+//            , @RequestParam(value = "endTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime endTime
+//    ) {
+//
+//        return super.getBetween(startDate, startTime, endDate, endTime);
+//    }
+
+    // custom formatters without annotation-driving
+//    @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public List<MealWithExceed> getBetween(
+//            @RequestParam(value = "startDate", required = false) String startDateStr
+//            , @RequestParam(value = "startTime", required = false) String startTimeStr
+//            , @RequestParam(value = "endDate", required = false) String endDateStr
+//            , @RequestParam(value = "endTime", required = false) String endTimeStr
+//    ) throws ParseException {
+//        MyDateFormatter dateFormatter = new MyDateFormatter("yyyy-MM-dd");
+//        MyTimeFormatter timeFormatter = new MyTimeFormatter("HH:mm");
+//
+//        LocalDate startDate = dateFormatter.parse(startDateStr, Locale.CANADA);
+//        LocalDate endDate = dateFormatter.parse(endDateStr, Locale.CANADA);
+//        LocalTime startTime = timeFormatter.parse(startTimeStr, Locale.CANADA);
+//        LocalTime endTime = timeFormatter.parse(endTimeStr, Locale.CANADA);
+//
+//        return super.getBetween(startDate, startTime, endDate, endTime);
+//    }
+
+    //using annotation-driven custom formatter
     @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MealWithExceed> getBetween(
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate
-            , @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime startTime
-            , @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
-            , @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime endTime
+            @RequestParam(value = "startDate", required = false) @CustomDateTimeFormat LocalDate startDate
+            , @RequestParam(value = "startTime", required = false) @CustomDateTimeFormat LocalTime startTime
+            , @RequestParam(value = "endDate", required = false) @CustomDateTimeFormat LocalDate endDate
+            , @RequestParam(value = "endTime", required = false) @CustomDateTimeFormat LocalTime endTime
     ) {
 
         return super.getBetween(startDate, startTime, endDate, endTime);
