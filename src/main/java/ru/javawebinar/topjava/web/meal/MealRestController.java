@@ -21,12 +21,12 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
-@RequestMapping(MealRestController.REST_URL)
+@RequestMapping(value = MealRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealRestController extends AbstractMealController {
     static final String REST_URL = "/rest/meals";
 
     @Override
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}")
     public Meal get(@PathVariable("id") int id) {
         return super.get(id);
     }
@@ -38,13 +38,13 @@ public class MealRestController extends AbstractMealController {
     }
 
     @Override
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public List<MealWithExceed> getAll() {
         return super.getAll();
     }
 
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Meal> createWithLocation(@RequestBody Meal meal) {
         Meal created = super.create(meal);
 
@@ -93,7 +93,7 @@ public class MealRestController extends AbstractMealController {
 //    }
 
     //using annotation-driven custom formatter
-    @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/filter")
     public List<MealWithExceed> getBetween(
             @RequestParam(value = "startDate", required = false) @CustomDateTimeFormat LocalDate startDate
             , @RequestParam(value = "startTime", required = false) @CustomDateTimeFormat LocalTime startTime
