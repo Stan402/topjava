@@ -23,14 +23,16 @@
                                         code="meal.startDate"/>:</label>
 
                                 <div class="col-sm-3">
-                                    <input class="form-control" name="startDate" id="startDate">
+                                    <input class="form-control" name="startDate" id="startDate"
+                                           onfocus="$('#startDate').datetimepicker({format:'Y-m-d'});">
                                 </div>
 
                                 <label class="control-label col-sm-4" for="startTime"><spring:message
                                         code="meal.startTime"/>:</label>
 
                                 <div class="col-sm-2">
-                                    <input class="form-control" name="startTime" id="startTime">
+                                    <input class="form-control" name="startTime" id="startTime"
+                                           onfocus="$('#startTime').datetimepicker({format:'H:i'});">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -38,14 +40,16 @@
                                         code="meal.endDate"/>:</label>
 
                                 <div class="col-sm-3">
-                                    <input class="form-control" name="endDate" id="endDate">
+                                    <input class="form-control" name="endDate" id="endDate"
+                                           onfocus="$('#endDate').datetimepicker({format:'Y-m-d'});">
                                 </div>
 
                                 <label class="control-label col-sm-4" for="endTime"><spring:message
                                         code="meal.endTime"/>:</label>
 
                                 <div class="col-sm-2">
-                                    <input class="form-control" name="endTime" id="endTime">
+                                    <input class="form-control" name="endTime" id="endTime"
+                                           onfocus="$('#endTime').datetimepicker({format:'H:i'});">
                                 </div>
                             </div>
                         </form>
