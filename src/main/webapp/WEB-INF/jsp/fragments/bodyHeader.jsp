@@ -7,6 +7,9 @@
 
         <div class="collapse navbar-collapse">
             <form class="navbar-form navbar-right">
+
+                <a class="btn btn-info" href="meals"><spring:message code="meal.title"/></a>
+
                 <a class="btn btn-info" href="users"><spring:message code="user.title"/></a>
 
                 <a class="btn btn-primary" href="">
