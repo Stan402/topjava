@@ -72,3 +72,7 @@ function failNoty(jqXHR) {
         layout: "bottomRight"
     }).show();
 }
+
+function showData(data) {
+    datatableApi.clear().rows.add(data).draw();
+}

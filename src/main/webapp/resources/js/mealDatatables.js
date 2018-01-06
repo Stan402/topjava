@@ -45,9 +45,7 @@ function updateTable() {
         startDate: startDate,
         endTime: endTime,
         endDate: endDate
-    }, function (data) {
-        datatableApi.clear().rows.add(data).draw();
-    });
+    }, function(data){showData(data)});
 }
 
 function clearFilter() {
@@ -55,5 +53,5 @@ function clearFilter() {
     $("#endTime").val("");
     $("#startDate").val("");
     $("#endDate").val("");
-    updateTable();
+    $.get(ajaxUrl, function(data){showData(data)});
 }

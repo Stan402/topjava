@@ -43,23 +43,19 @@ $(function () {
 });
 
 function updateTable() {
-    $.get(ajaxUrl, function (data) {
-        datatableApi.clear().rows.add(data).draw();
-    });
+    $.get(ajaxUrl, function(data){showData(data)});
 }
 
 function checkboxSetup() {
     $(document).ready(function () {
         $('input[type="checkbox"]').change(function () {
-            setUserStatus($(this).closest('tr').attr("id"), $(this).is(":checked"))
+            var row = $(this).closest('tr');
+            var enabled = $(this).is(":checked");
+            $.post(ajaxUrl + row.attr("id"), {enabled: enabled}, function () {
+                enabled ? row.removeClass('disabled') : row.addClass('disabled');
+                successNoty("Status changed");
+            });
         });
     });
 
-}
-
-function setUserStatus(id, enabled) {
-    $.post(ajaxUrl + id, {enabled: enabled}, function () {
-        updateTable();
-        successNoty("Status changed");
-    });
 }
