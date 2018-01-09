@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService {
         return checkNotFoundWithId(repository.getWithMeals(id), id);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Override
     @Transactional
     public void setStatus(int id, boolean enabled) throws NotFoundException {

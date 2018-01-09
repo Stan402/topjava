@@ -13,13 +13,10 @@ import java.util.List;
 @RequestMapping("/ajax/admin/users")
 public class AdminAjaxController extends AbstractUserController {
 
-    @Autowired
-    private CacheManager cacheManager;
 
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAll() {
-        cacheManager.getCache("users").clear();
         return super.getAll();
     }
 
