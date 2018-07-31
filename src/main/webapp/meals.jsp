@@ -13,6 +13,7 @@
         <th>Description</th>
         <th>Date/time</th>
         <th>Calories</th>
+        <th colspan=2>Action</th>
     </tr>
     <jsp:useBean id="meals" scope="request" type="java.util.List<ru.javawebinar.topjava.model.MealWithExceed>"/>
     <c:forEach var="m" items="${meals}">
@@ -23,9 +24,13 @@
                 <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${ parsedDateTime }"/>
             </td>
             <td>${m.calories}</td>
+            <td><a href="meals?action=edit&mealId=${m.id}">Update</a> </td>
+            <td><a href="meals?action=delete&mealId=${m.id}">Delete</a> </td>
         </tr>
     </c:forEach>
 </table>
+
+<p><a href="meals?action=add">Add Meal</a> </p>
 
 </body>
 </html>
